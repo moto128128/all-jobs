@@ -1,0 +1,490 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Sandbox Box-In-A-Box Simulator</title>
+    <style>
+        :root {
+            --bg-color: #0b0f19;
+            --box-bg: #1e293b;
+            --border: #334155;
+            --text: #f8fafc;
+            --muted: #94a3b8;
+            --accent: #38bdf8;
+            --green: #10b981;
+            --red: #ef4444;
+            --orange: #f59e0b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text);
+            padding: 15px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* ONE DEFINITIVE BOX CONTAINER FRAME */
+        .the-single-box {
+            width: 100%;
+            max-width: 480px;
+            background-color: var(--box-bg);
+            border-radius: 20px;
+            border: 2px solid var(--border);
+            padding: 20px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+        }
+
+        .box-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        h1 {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: var(--accent);
+            letter-spacing: -0.5px;
+        }
+
+        /* Role Selector Dropdown Container */
+        .select-container {
+            margin-bottom: 16px;
+        }
+
+        select.master-select {
+            width: 100%;
+            padding: 12px;
+            background: #0f172a;
+            border: 1px solid var(--border);
+            color: white;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            outline: none;
+        }
+
+        select.master-select:focus {
+            border-color: var(--accent);
+        }
+
+        /* Action Viewport Module */
+        .action-viewport {
+            background: #0f172a;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 14px;
+            min-height: 230px;
+        }
+
+        .role-panel {
+            display: none;
+        }
+
+        .role-panel.active {
+            display: block;
+        }
+
+        /* Generic Layout Row Elements */
+        .sub-row {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 9px 12px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            font-size: 0.85rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .badge {
+            padding: 3px 6px;
+            border-radius: 5px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        input, select.panel-input {
+            width: 100%;
+            padding: 9px;
+            background: var(--box-bg);
+            border: 1px solid var(--border);
+            color: white;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+            outline: none;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 10px;
+            background: var(--accent);
+            color: #0f172a;
+            font-weight: 700;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+
+        .btn:hover { opacity: 0.9; }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .btn-sm {
+            padding: 8px;
+            background: #334155;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        .btn-sm:hover { background: #475569; }
+
+        /* Specific Simulation Component Objects */
+        .vision-chart {
+            background: white;
+            color: black;
+            padding: 8px;
+            border-radius: 6px;
+            text-align: center;
+            font-weight: 900;
+            line-height: 1.2;
+            margin-bottom: 10px;
+            letter-spacing: 5px;
+        }
+
+        .tape-ledger {
+            background: var(--box-bg);
+            border: 1px dashed var(--border);
+            padding: 8px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 0.8rem;
+            max-height: 80px;
+            overflow-y: auto;
+            margin-bottom: 8px;
+        }
+
+        /* HARDWARE PRINTER EXCLUSIVE STYLING MODE */
+        @media print {
+            body { background: white !important; color: black !important; padding: 0 !important; }
+            .the-single-box { display: none !important; }
+            #hardwarePrintBed { display: block !important; padding: 20px; font-family: monospace; color: black; background: white; }
+        }
+        
+        #hardwarePrintBed {
+            display: none;
+        }
+        
+        .print-receipt-ticket {
+            border: 1px dashed #000;
+            padding: 15px;
+            max-width: 300px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="the-single-box">
+        <!-- Dashboard Branding Header -->
+        <div class="box-header">
+            <h1>📦 Box-In-A-Box Simulator</h1>
+            <div id="simClock" style="font-size: 0.8rem; color: var(--muted); font-family: monospace;">00:00</div>
+        </div>
+
+        <!-- Master Switch Routing Control -->
+        <div class="select-container">
+            <select class="master-select" id="masterSwitch" onchange="routeBox(this.value)">
+                <option value="teacher">🍎 Role: Classroom Teacher</option>
+                <option value="eyedoctor">👁️ Role: Vision Eye Doctor</option>
+                <option value="airport">✈️ Role: Airport Flight Control</option>
+                <option value="hotel">🏢 Role: Hotel / Apartment Worker</option>
+                <option value="store">🛒 Role: Retail Store Worker</option>
+                <option value="carwash">🧼 Role: Car Wash Station</option>
+                <option value="restaurant">🍳 Role: Restaurant Kitchen</option>
+                <option value="printshop">🖨️ Role: Print Shop Counter</option>
+                <option value="dad">☕ Role: Dad Home Central</option>
+            </select>
+        </div>
+
+        <!-- Dynamic Viewport Dashboard System -->
+        <div class="action-viewport">
+            
+            <!-- 1. Teacher Module -->
+            <div id="view-teacher" class="role-panel active">
+                <div class="sub-row"><span>Hunter J.</span><span class="badge" style="background:var(--green)">PRESENT</span></div>
+                <div class="sub-row"><span>Jacob D.</span><span class="badge" style="background:var(--red)">ABSENT</span></div>
+                <input type="text" id="teachName" placeholder="Enter Student Name">
+                <select id="teachAward" class="panel-input">
+                    <option value="👑 Gold Leadership">👑 Gold Leadership Sticker</option>
+                    <option value="⭐ Math Genius">⭐ Math Thinking Medal</option>
+                </select>
+                <button class="btn" onclick="issueAward()">Log Ribbon & Print</button>
+                <div id="teachOut" style="margin-top:8px; text-align:center; font-size:0.8rem; color:var(--orange); font-weight:600;"></div>
+            </div>
+
+            <!-- 2. Eye Doctor Module -->
+            <div id="view-eyedoctor" class="role-panel">
+                <div class="vision-chart">
+                    <div style="font-size:1.6rem;">E</div>
+                    <div style="font-size:1rem;">F P B</div>
+                    <div style="font-size:0.7rem; letter-spacing:3px;">T Z O L D</div>
+                </div>
+                <div class="grid-2">
+                    <input type="text" id="eyeL" value="Left: -1.25" style="margin-bottom:0;">
+                    <input type="text" id="eyeR" value="Right: -1.50" style="margin-bottom:0;">
+                </div>
+                <button class="btn" onclick="alert('Lens prescription metadata locked to host directory.')">Commit Vision Rx</button>
+            </div>
+
+            <!-- 3. Airport Module -->
+            <div id="view-airport" class="role-panel">
+                <div class="sub-row" style="border-left: 3px solid var(--green)"><span>✈️ Paris (UA-240)</span><span class="badge" style="background:var(--green)">BOARDING</span></div>
+                <div class="sub-row" style="border-left: 3px solid var(--red)"><span>✈️ Chicago (DL-892)</span><span class="badge" style="background:var(--red)">DELAYED</span></div>
+                <select id="airVox" class="panel-input">
+                    <option value="Final boarding call for flight UA 240 to Paris. All passengers proceed to gate 4.">Paris Final Call Audio</option>
+                    <option value="Attention passengers: Flight DL 892 to Chicago has been delayed due to terminal weather.">Chicago Delay Alert Audio</option>
+                </select>
+                <button class="btn" onclick="speakVox()">📢 Broadcast PA Announcement</button>
+            </div>
+
+            <!-- 4. Hotel Module -->
+            <div id="view-hotel" class="role-panel">
+                <div class="sub-row"><span>Apt 101 (Linda A.)</span><span class="badge" style="background:var(--green)">CLEAN</span></div>
+
+Apt 103 (Vacant)DIRTY
+
+
+
+
+Write Digital Keycard File
+
+🥤 Soda ($1.50)
+🍗 Nuggets ($4.50)
+
+👉 Scan register elements to build ticket ledger...
+
+BAL DUE:
+$0.00
+
+
+🖨️ Hard Print Ticket
+💳 Clear Receipt Ledger
+
+Bay 1 StatusREADY
+
+Standard Foam Wash ($10)
+Premium Wax & Shine ($15)
+Ultimate Platinum ($20)
+
+⚡ Initiate High-Pressure Wash Cycle
+🍔 Burger ($8.50)
+🍟 Fries ($3.00)
+
+🥤 Milkshake ($4.00)
+👉 Queue kitchen tickets...
+
+ORDER TOTAL:
+$0.00
+
+
+🖨️ Print Kitchen Ticket
+🍳 Send Order to Line
+
+Job Queue StatusIDLE
+Standard Matte
+Glossy Photo Paper
+Heavy Cardstock
+
+
+Full Vivid Color
+Black & White
+
+
+🖨️ Spool & Print Document
+⚡ Run Production Run
+
+🎥 GARAGE CAM 1: CHANNEL SECURE
+
+House Thermostat Setting68°F
+Coffee Reservoir Meter2 Cups
+
+Drink Cup
+Fill Pot
+
+// Box View Router Matrix Configuration
+function routeBox(panelValue) {
+document.querySelectorAll('.role-panel').forEach(panel => panel.classList.remove('active'));
+document.getElementById(view-${panelValue}).classList.add('active');
+}
+// Classroom Subroutines
+function issueAward() {
+const name = document.getElementById('teachName').value || 'Student';
+const award = document.getElementById('teachAward').value;
+document.getElementById('teachOut').innerHTML = Log written: ${name} matched to ${award};
+}
+// Native Speech Vocalization Driver
+function speakVox() {
+const lines = document.getElementById('airVox').value;
+const engine = new SpeechSynthesisUtterance(lines);
+engine.rate = 0.92;
+window.speechSynthesis.speak(engine);
+}
+// Property Key Management Simulation
+function programCard() {
+const g = document.getElementById('hotG').value;
+const r = document.getElementById('hotR').value;
+if(!g || !r) return alert('Enter credentials.');
+document.getElementById('hotOut').innerText = Success: Key signature uploaded for Room ${r}.;
+}
+// Retail Cashier Point-of-Sale Engine Calculator
+let activeSum = 0;
+let loggedStoreItems = [];
+function billItem(name, cost) {
+const body = document.getElementById('tapeBody');
+if(activeSum === 0) { body.innerHTML = ''; loggedStoreItems = []; }
+activeSum += cost;
+loggedStoreItems.push({name, cost});
+const itemRow = document.createElement('div');
+itemRow.style.display = 'flex';
+itemRow.style.justifyContent = 'space-between';
+itemRow.innerHTML = <span>• ${name}</span><span>$${cost.toFixed(2)}</span>;
+body.appendChild(itemRow);
+document.getElementById('tapeSum').innerText = $${activeSum.toFixed(2)};
+}
+function printReceipt() {
+if(activeSum === 0) return;
+alert(Retail Receipt Transmitted!\nTotal Billed: $${activeSum.toFixed(2)});
+document.getElementById('tapeBody').innerText = '👉 Scan register elements to build ticket ledger...';
+activeSum = 0;
+loggedStoreItems = [];
+document.getElementById('tapeSum').innerText = '$0.00';
+}
+// Car Wash Station Controller
+function startCarWash() {
+const statusBadge = document.getElementById('washStatus');
+const washBtn = document.getElementById('washBtn');
+const cycleSelected = document.getElementById('washType').value;
+statusBadge.innerText = "WASHING";
+statusBadge.style.background = "var(--orange)";
+washBtn.disabled = true;
+washBtn.innerText = 🫧 Sprayers Active: ${cycleSelected}...;
+setTimeout(() => {
+statusBadge.innerText = "READY";
+statusBadge.style.background = "var(--green)";
+washBtn.disabled = false;
+washBtn.innerText = "⚡ Initiate High-Pressure Wash Cycle";
+alert("Wash cycle completed! Air dryers activated.");
+}, 4000);
+}
+// Restaurant POS & Kitchen Ledger Engine
+let restSum = 0;
+let loggedRestItems = [];
+function billRestItem(name, cost) {
+const body = document.getElementById('restTapeBody');
+if(restSum === 0) { body.innerHTML = ''; loggedRestItems = []; }
+restSum += cost;
+loggedRestItems.push({name, cost});
+const line = document.createElement('div');
+line.style.display = 'flex';
+line.style.justifyContent = 'space-between';
+line.innerHTML = <span>🍔 ${name}</span><span>$${cost.toFixed(2)}</span>;
+body.appendChild(line);
+document.getElementById('restTapeSum').innerText = $${restSum.toFixed(2)};
+}
+function clearRestOrder() {
+if(restSum === 0) return;
+alert(Order sent to kitchen line! Total: $${restSum.toFixed(2)});
+document.getElementById('restTapeBody').innerText = '👉 Queue kitchen tickets...';
+restSum = 0;
+loggedRestItems = [];
+document.getElementById('restTapeSum').innerText = '$0.00';
+}
+// Print Shop Production Control
+function simulatePrintQueue() {
+const jobTitle = document.getElementById('printJobTitle').value || "Untitled Document";
+const paperType = document.getElementById('printPaperType').value;
+const colorMode = document.getElementById('printColorMode').value;
+const statusBadge = document.getElementById('printShopStatus');
+statusBadge.innerText = "PRINTING";
+statusBadge.style.background = "var(--orange)";
+setTimeout(() => {
+statusBadge.innerText = "READY";
+statusBadge.style.background = "var(--green)";
+alert(Production complete!\n"${jobTitle}" has finished pressing on ${paperType} using ${colorMode}. Staged in checkout tray.);
+}, 3000);
+}
+// Hardware Spooler Core Logic (Generates custom layout print assets)
+function spoolPhysicalPrint(sourceMode) {
+const bed = document.getElementById('hardwarePrintBed');
+let contentString = "";
+if (sourceMode === 'store') {
+if(activeSum === 0) return alert("Scan store components first to generate layout items.");
+contentString = <div class="print-receipt-ticket"><h2>SANDBOX CONVENIENCE STORE</h2><p>Date: ${new Date().toLocaleDateString()}</p><hr style="border-style:dashed;"><br>;
+loggedStoreItems.forEach(item => {
+contentString += <div style="display:flex; justify-content:space-between;"><span>• ${item.name}</span><span>$${item.cost.toFixed(2)}</span></div>;
+});
+contentString += <br><hr style="border-style:dashed;"><br><div style="display:flex; justify-content:space-between; font-weight:bold;"><span>TOTAL DUE:</span><span>$${activeSum.toFixed(2)}</span></div><br><p style="text-align:center;">THANK YOU FOR SHOPPING!</p></div>;
+}
+else if (sourceMode === 'restaurant') {
+if(restSum === 0) return alert("Select restaurant items to build out the kitchen order line.");
+contentString = <div class="print-receipt-ticket" style="border-color:red;"><h2>🔥 KITCHEN LINE TICKET 🔥</h2><p>Timestamp: ${new Date().toLocaleTimeString()}</p><hr style="border-style:dashed;"><br>;
+loggedRestItems.forEach(item => {
+contentString += <div style="font-size:1.2rem; font-weight:bold;">[ ] 1x ${item.name}</div>;
+});
+contentString += <br><hr style="border-style:dashed;"><p>Expedite Station: Table Box 1</p></div>;
+}
+else if (sourceMode === 'printshop') {
+const docTitle = document.getElementById('printJobTitle').value || "CUSTOM PRINT SHOP FLYER";
+const pType = document.getElementById('printPaperType').value;
+const cMode = document.getElementById('printColorMode').value;
+contentString = <div style="border: 8px double #000; padding: 40px; text-align:center; max-width:550px; margin:0 auto; font-family: 'Impact', sans-serif;"> <h1 style="font-size: 2.5rem; text-transform: uppercase; margin-bottom: 20px;">${docTitle}</h1> <hr style="border: 2px solid #000;"> <br><p style="font-size: 1.2rem; font-weight: bold;">OFFICIAL PRESS RUN</p> <p style="color: #555;">Processed on: ${pType} | Output Mode: ${cMode}</p> <br><div style="border: 1px solid #000; padding: 15px; background: #fafafa; font-style: italic;"> This document was dynamically spooled and custom-pressed directly from the Box-In-A-Box Print Shop client counter dashboard interface. </div> <br><p style="font-size: 0.8rem; color: #999;">Sandbox Hub Print Press Matrix Rev 5.00</p> </div>;
+}
+if (!contentString) return;
+bed.innerHTML = contentString;
+window.print();
+}
+// Dad Parameter Controls Incrementor
+let cupsLeft = 2;
+function pourCoffee(diff) {
+if(cupsLeft + diff >= 0) {
+cupsLeft += diff;
+document.getElementById('dadCoffeeAmt').innerText = ${cupsLeft} Cup${cupsLeft !== 1 ? 's' : ''};
+}
+}
+// Real-Time Universal Matrix Clock Updates
+function clockCycle() {
+const timeObj = new Date();
+document.getElementById('simClock').innerText = timeObj.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', second:'2-digit'});
+}
+setInterval(clockCycle, 1000);
+clockCycle();
