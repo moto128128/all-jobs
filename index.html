@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Sandbox Box-In-A-Box Simulator</title>
+    <title>The Ultimate Sandbox Multi-Job Dashboard</title>
     <style>
         :root {
             --bg-color: #0b0f19;
@@ -36,10 +36,9 @@
             align-items: center;
         }
 
-        /* ONE DEFINITIVE BOX CONTAINER FRAME */
         .the-single-box {
             width: 100%;
-            max-width: 480px;
+            max-width: 580px;
             background-color: var(--box-bg);
             border-radius: 20px;
             border: 2px solid var(--border);
@@ -63,7 +62,6 @@
             letter-spacing: -0.5px;
         }
 
-        /* Role Selector Dropdown Container */
         .select-container {
             margin-bottom: 16px;
         }
@@ -85,13 +83,12 @@
             border-color: var(--accent);
         }
 
-        /* Action Viewport Module */
         .action-viewport {
             background: #0f172a;
             border: 1px solid var(--border);
             border-radius: 12px;
             padding: 14px;
-            min-height: 230px;
+            min-height: 400px;
         }
 
         .role-panel {
@@ -102,7 +99,26 @@
             display: block;
         }
 
-        /* Generic Layout Row Elements */
+        .panel-section {
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px dashed var(--border);
+        }
+
+        .panel-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        h3 {
+            font-size: 0.9rem;
+            color: var(--accent);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
         .sub-row {
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.05);
@@ -123,7 +139,7 @@
             color: white;
         }
 
-        input, select.panel-input {
+        input, select.panel-input, textarea {
             width: 100%;
             padding: 9px;
             background: var(--box-bg);
@@ -133,6 +149,11 @@
             font-size: 0.85rem;
             margin-bottom: 8px;
             outline: none;
+        }
+
+        textarea {
+            resize: vertical;
+            height: 60px;
         }
 
         .btn {
@@ -168,7 +189,6 @@
         }
         .btn-sm:hover { background: #475569; }
 
-        /* Specific Simulation Component Objects */
         .vision-chart {
             background: white;
             color: black;
@@ -188,12 +208,11 @@
             border-radius: 6px;
             font-family: monospace;
             font-size: 0.8rem;
-            max-height: 80px;
+            max-height: 100px;
             overflow-y: auto;
             margin-bottom: 8px;
         }
 
-        /* HARDWARE PRINTER EXCLUSIVE STYLING MODE */
         @media print {
             body { background: white !important; color: black !important; padding: 0 !important; }
             .the-single-box { display: none !important; }
@@ -215,158 +234,268 @@
 <body>
 
     <div class="the-single-box">
-        <!-- Dashboard Branding Header -->
         <div class="box-header">
-            <h1>📦 Box-In-A-Box Simulator</h1>
+            <h1>📦 Pro Master Sandbox</h1>
             <div id="simClock" style="font-size: 0.8rem; color: var(--muted); font-family: monospace;">00:00</div>
         </div>
 
-        <!-- Master Switch Routing Control -->
         <div class="select-container">
             <select class="master-select" id="masterSwitch" onchange="routeBox(this.value)">
-                <option value="teacher">🍎 Role: Classroom Teacher</option>
-                <option value="eyedoctor">👁️ Role: Vision Eye Doctor</option>
-                <option value="airport">✈️ Role: Airport Flight Control</option>
-                <option value="hotel">🏢 Role: Hotel / Apartment Worker</option>
-                <option value="store">🛒 Role: Retail Store Worker</option>
-                <option value="carwash">🧼 Role: Car Wash Station</option>
-                <option value="restaurant">🍳 Role: Restaurant Kitchen</option>
-                <option value="printshop">🖨️ Role: Print Shop Counter</option>
-                <option value="dad">☕ Role: Dad Home Central</option>
+                <option value="teacher">🍎 Role: Classroom Teacher & Principal</option>
+                <option value="eyedoctor">👁️ Role: Vision Eye Doctor Clinic</option>
+                <option value="airport">✈️ Role: Airport Tower & Terminal</option>
+                <option value="hotel">🏢 Role: Hotel Front Desk & Apartments</option>
+                <option value="store">🛒 Role: Convenience Store Register POS</option>
+                <option value="carwash">🧼 Role: Automated Car Wash Complex</option>
+                <option value="restaurant">🍳 Role: Restaurant Kitchen & Diner</option>
+                <option value="printshop">🖨️ Role: Commercial Print Shop Counter</option>
+                <option value="dad">☕ Role: Dad Home Operations Center</option>
             </select>
         </div>
 
-        <!-- Dynamic Viewport Dashboard System -->
         <div class="action-viewport">
             
-            <!-- 1. Teacher Module -->
+            <!-- 1. TEACHER & PRINCIPAL -->
             <div id="view-teacher" class="role-panel active">
-                <div class="sub-row"><span>Hunter J.</span><span class="badge" style="background:var(--green)">PRESENT</span></div>
-                <div class="sub-row"><span>Jacob D.</span><span class="badge" style="background:var(--red)">ABSENT</span></div>
-                <input type="text" id="teachName" placeholder="Enter Student Name">
-                <select id="teachAward" class="panel-input">
-                    <option value="👑 Gold Leadership">👑 Gold Leadership Sticker</option>
-                    <option value="⭐ Math Genius">⭐ Math Thinking Medal</option>
-                </select>
-                <button class="btn" onclick="issueAward()">Log Ribbon & Print</button>
-                <div id="teachOut" style="margin-top:8px; text-align:center; font-size:0.8rem; color:var(--orange); font-weight:600;"></div>
+                <div class="panel-section">
+                    <h3>Principal School Board Notice</h3>
+                    <div class="sub-row"><span>Morning Announcements Status</span><span class="badge" style="background:var(--green)">BROADCASTED</span></div>
+                    <div class="sub-row"><span>Jacob D. (Absence Check)</span><span class="badge" style="background:var(--red)">CALL PARENT</span></div>
+                </div>
+                <div class="panel-section">
+                    <h3>Student Database & Attendance</h3>
+                    <div class="sub-row"><span>Hunter J. Anderson</span><span class="badge" style="background:var(--green)">PRESENT</span></div>
+                    <div class="sub-row"><span>Jenna M. Anderson</span><span class="badge" style="background:var(--green)">PRESENT</span></div>
+                    <input type="text" id="teachName" placeholder="Enter New Student Name">
+                    <div class="grid-2">
+                        <button class="btn-sm" onclick="alert('Student checked in to attendance database!')">Mark Present</button>
+                        <button class="btn-sm" style="background:var(--red);" onclick="alert('Absence recorded for today.')">Mark Absent</button>
+                    </div>
+                </div>
+                <div class="panel-section">
+                    <h3>Custom Merit Sticker Engine</h3>
+                    <select id="teachAward" class="panel-input">
+                        <option value="👑 Gold Leadership Ribbon">👑 Gold Leadership Sticker</option>
+                        <option value="⭐ Star Math Thinker Medal">⭐ Star Math Thinker Medal</option>
+                        <option value="📚 Super Reader Reading Badge">📚 Super Reader Certificate</option>
+                    </select>
+                    <button class="btn" onclick="issueAward()">Log & Spool Sticker Badge</button>
+                    <div id="teachOut" style="margin-top:8px; text-align:center; font-size:0.8rem; color:var(--orange); font-weight:600;"></div>
+                </div>
             </div>
 
-            <!-- 2. Eye Doctor Module -->
+            <!-- 2. EYE DOCTOR CLINIC -->
             <div id="view-eyedoctor" class="role-panel">
-                <div class="vision-chart">
-                    <div style="font-size:1.6rem;">E</div>
-                    <div style="font-size:1rem;">F P B</div>
-                    <div style="font-size:0.7rem; letter-spacing:3px;">T Z O L D</div>
-                </div>
-                <div class="grid-2">
-                    <input type="text" id="eyeL" value="Left: -1.25" style="margin-bottom:0;">
-                    <input type="text" id="eyeR" value="Right: -1.50" style="margin-bottom:0;">
-                </div>
-                <button class="btn" onclick="alert('Lens prescription metadata locked to host directory.')">Commit Vision Rx</button>
-            </div>
+                <div class="panel-section">
+                    <h3>Digital Snellen Vision Chart</h3>
+                    <div class="vision-chart">
+                        <div style="font-size:1.6rem;">E</div>
+                        <div style="font-size:1rem;">F P B</div>
+                        <div style="font-size:0.7rem; letter-spacing:3px;">T Z O L D</div>
+                    </div>
 
-            <!-- 3. Airport Module -->
-            <div id="view-airport" class="role-panel">
-                <div class="sub-row" style="border-left: 3px solid var(--green)"><span>✈️ Paris (UA-240)</span><span class="badge" style="background:var(--green)">BOARDING</span></div>
-                <div class="sub-row" style="border-left: 3px solid var(--red)"><span>✈️ Chicago (DL-892)</span><span class="badge" style="background:var(--red)">DELAYED</span></div>
-                <select id="airVox" class="panel-input">
-                    <option value="Final boarding call for flight UA 240 to Paris. All passengers proceed to gate 4.">Paris Final Call Audio</option>
-                    <option value="Attention passengers: Flight DL 892 to Chicago has been delayed due to terminal weather.">Chicago Delay Alert Audio</option>
-                </select>
-                <button class="btn" onclick="speakVox()">📢 Broadcast PA Announcement</button>
-            </div>
-
-            <!-- 4. Hotel Module -->
-            <div id="view-hotel" class="role-panel">
-                <div class="sub-row"><span>Apt 101 (Linda A.)</span><span class="badge" style="background:var(--green)">CLEAN</span></div>
-
-Apt 103 (Vacant)DIRTY
+🔄 Swap Phoropter Lens Dial
 
 
+Patient Prescription File Manager
 
 
-Write Digital Keycard File
+Medical Diagnosis Dispatch
+Commit Prescription to Medical File
 
-🥤 Soda ($1.50)
+Live Flight Tracking Display
+✈️ Paris (UA-240) Leona A. & Hunter A.BOARDING
+✈️ Chicago (DL-892) InboundDELAYED
+✈️ New York (AA-104) Cargo RunON TIME
+
+
+Gate Assignment & Runway Control
+
+
+Gate 4 (International)
+Gate 9 (Domestic)
+
+
+Runway 31-Left (Clear)
+Runway 14-Right (Taxiing)
+
+
+Assign Runway & Gate Paths
+
+
+Live PA Terminal Announcement Speaker
+
+Paris Flight Final Call Audio
+Chicago Weather Delay Alert Audio
+
+📢 Broadcast Audio Announcement
+
+Housekeeping Room Matrix Log
+Apt 101 (Linda Anderson)CLEAN
+Apt 102 (Leona Anderson)CLEANING
+Apt 103 (Vacant Unit Block)DIRTY
+
+
+Guest Check-In Ledger & Data Registry
+
+
+
+
+
+
+
+Visa Card
+American Express
+
+
+Encode Guest Profiles & Write Keycard
+
+
+
+Maintenance Ticket Center
+
+Dispatch Work Order
+
+Barcode Scan Register Controls
+
+🥤 Soda Pop ($1.50)
 🍗 Nuggets ($4.50)
 
-👉 Scan register elements to build ticket ledger...
 
-BAL DUE:
+🧀 Mac & Cheese ($3.00)
+🔋 Fresh Battery ($5.00)
+
+
+
+Point-of-Sale Register Display Ledger
+👉 Scan stock items to compile automated ledger tapes...
+
+BALANCE DUE:
 $0.00
 
 
-🖨️ Hard Print Ticket
-💳 Clear Receipt Ledger
 
-Bay 1 StatusREADY
+Pinpad & Terminal Printing Hub
+
+🖨️ Hard Print Thermal Receipt
+💳 Complete Transaction (Clear Ledger)
+
+
+Conveyor Belt Monitor & Bay Diagnostic
+Bay 1 Wash CircuitREADY
+Water Reclamation PumpsONLINE
+FX-2700 Dryer Assembly100% ENERGY CHARGED
+
+
+Wash Cycle Configuration Deck
 
 Standard Foam Wash ($10)
 Premium Wax & Shine ($15)
-Ultimate Platinum ($20)
+Ultimate Platinum Wash ($20)
 
-⚡ Initiate High-Pressure Wash Cycle
+Keycard System AuthenticationCONNECTED
+
+
+Hardware Wash Initiation Engine
+⚡ Fire High-Pressure Spray Loop & Dryers
+
+Guest Menu Fast-Key Order Panels
+
 🍔 Burger ($8.50)
 🍟 Fries ($3.00)
 
-🥤 Milkshake ($4.00)
-👉 Queue kitchen tickets...
 
-ORDER TOTAL:
+🥤 Milkshake ($4.00)
+🍋 Lemonade ($2.00)
+
+
+
+Active Kitchen Line Order Tray
+👉 Log diner items to populate cook line slates...
+
+KITCHEN BILL TOTAL:
 $0.00
 
 
-🖨️ Print Kitchen Ticket
-🍳 Send Order to Line
 
-Job Queue StatusIDLE
-Standard Matte
+Line Controller Communications
+
+🖨️ Print Ticket to Kitchen Line
+🍳 Complete Cook Run (Clear Tray)
+
+
+Commercial Press Operating Monitor
+Primary Cyan/Magenta RollersIDLE
+Laser Jet Alignment StatusCALIBRATED
+
+
+Production Order File Ingest
+
+
+Standard Matte Sheets
 Glossy Photo Paper
-Heavy Cardstock
+Thick Cardstock Blanks
+Thermal Sticker Paper
 
 
 Full Vivid Color
-Black & White
+Black & White Only
 
 
-🖨️ Spool & Print Document
-⚡ Run Production Run
 
-🎥 GARAGE CAM 1: CHANNEL SECURE
 
-House Thermostat Setting68°F
-Coffee Reservoir Meter2 Cups
 
-Drink Cup
-Fill Pot
+Industrial Engine Controller Dispatch
 
-// Box View Router Matrix Configuration
+🖨️ Spool & Execute Hardware Press
+⚡ Initiate Simulated Processing Loop
+
+
+Smart Home Security Monitor Cam
+
+🎥 GARAGE CAM 1 FEED: SECURITY DOORS CLOSED
+
+Test Wireless Garage Opener Handshake
+
+
+Climate Zoning Diagnostic
+Main Floor Living Room68°F
+Kids Play Area Zone71°F
+
+Cool Down (-1°)
+Heat Up (+1°)
+
+
+
+Dad Daily Energy Inventory Meter
+Coffee Pot Fluid Reserves2 Cups Left
+
+Drink Active Cup
+Refill Coffee Pot Supply
+
+
 function routeBox(panelValue) {
 document.querySelectorAll('.role-panel').forEach(panel => panel.classList.remove('active'));
 document.getElementById(view-${panelValue}).classList.add('active');
 }
-// Classroom Subroutines
 function issueAward() {
 const name = document.getElementById('teachName').value || 'Student';
 const award = document.getElementById('teachAward').value;
-document.getElementById('teachOut').innerHTML = Log written: ${name} matched to ${award};
+document.getElementById('teachOut').innerHTML = Log Registry Updated:<br><strong>${name}</strong> successfully assigned to <strong>${award}</strong>;
 }
-// Native Speech Vocalization Driver
 function speakVox() {
 const lines = document.getElementById('airVox').value;
 const engine = new SpeechSynthesisUtterance(lines);
 engine.rate = 0.92;
 window.speechSynthesis.speak(engine);
 }
-// Property Key Management Simulation
 function programCard() {
 const g = document.getElementById('hotG').value;
 const r = document.getElementById('hotR').value;
-if(!g || !r) return alert('Enter credentials.');
-document.getElementById('hotOut').innerText = Success: Key signature uploaded for Room ${r}.;
+const brand = document.getElementById('hotCardBrand').value;
+if(!g || !r) return alert('Please enter guest name and unit details.');
+document.getElementById('hotOut').innerHTML = 💳 Key Matrix Written: Guest <strong>${g}</strong> assigned to Room <strong>${r}</strong> via <strong>${brand}</strong> portal.;
 }
-// Retail Cashier Point-of-Sale Engine Calculator
 let activeSum = 0;
 let loggedStoreItems = [];
 function billItem(name, cost) {
@@ -383,30 +512,28 @@ document.getElementById('tapeSum').innerText = $${activeSum.toFixed(2)};
 }
 function printReceipt() {
 if(activeSum === 0) return;
-alert(Retail Receipt Transmitted!\nTotal Billed: $${activeSum.toFixed(2)});
-document.getElementById('tapeBody').innerText = '👉 Scan register elements to build ticket ledger...';
+alert(Convenience POS Transmission Sent!\nTotal Balance Logged: $${activeSum.toFixed(2)});
+document.getElementById('tapeBody').innerText = '👉 Scan register elements to compile automated ledger tapes...';
 activeSum = 0;
 loggedStoreItems = [];
 document.getElementById('tapeSum').innerText = '$0.00';
 }
-// Car Wash Station Controller
 function startCarWash() {
 const statusBadge = document.getElementById('washStatus');
 const washBtn = document.getElementById('washBtn');
 const cycleSelected = document.getElementById('washType').value;
-statusBadge.innerText = "WASHING";
+statusBadge.innerText = "RUNNING";
 statusBadge.style.background = "var(--orange)";
 washBtn.disabled = true;
-washBtn.innerText = 🫧 Sprayers Active: ${cycleSelected}...;
+washBtn.innerText = 🫧 Active: Spooling ${cycleSelected}...;
 setTimeout(() => {
 statusBadge.innerText = "READY";
 statusBadge.style.background = "var(--green)";
 washBtn.disabled = false;
-washBtn.innerText = "⚡ Initiate High-Pressure Wash Cycle";
-alert("Wash cycle completed! Air dryers activated.");
-}, 4000);
+washBtn.innerText = "⚡ Fire High-Pressure Spray Loop & Dryers";
+alert("Automated high-pressure sprayer and drying cycle completed successfully!");
+}, 3000);
 }
-// Restaurant POS & Kitchen Ledger Engine
 let restSum = 0;
 let loggedRestItems = [];
 function billRestItem(name, cost) {
@@ -417,74 +544,73 @@ loggedRestItems.push({name, cost});
 const line = document.createElement('div');
 line.style.display = 'flex';
 line.style.justifyContent = 'space-between';
-line.innerHTML = <span>🍔 ${name}</span><span>$${cost.toFixed(2)}</span>;
+line.innerHTML = <span>🍳 ${name}</span><span>$${cost.toFixed(2)}</span>;
 body.appendChild(line);
 document.getElementById('restTapeSum').innerText = $${restSum.toFixed(2)};
 }
 function clearRestOrder() {
 if(restSum === 0) return;
-alert(Order sent to kitchen line! Total: $${restSum.toFixed(2)});
-document.getElementById('restTapeBody').innerText = '👉 Queue kitchen tickets...';
+alert(Diner ticket transmitted to main line chefs! Total: $${restSum.toFixed(2)});
+document.getElementById('restTapeBody').innerText = '👉 Log diner items to populate cook line slates...';
 restSum = 0;
 loggedRestItems = [];
 document.getElementById('restTapeSum').innerText = '$0.00';
 }
-// Print Shop Production Control
 function simulatePrintQueue() {
 const jobTitle = document.getElementById('printJobTitle').value || "Untitled Document";
 const paperType = document.getElementById('printPaperType').value;
 const colorMode = document.getElementById('printColorMode').value;
 const statusBadge = document.getElementById('printShopStatus');
-statusBadge.innerText = "PRINTING";
+statusBadge.innerText = "PRESS RUN";
 statusBadge.style.background = "var(--orange)";
 setTimeout(() => {
-statusBadge.innerText = "READY";
+statusBadge.innerText = "IDLE";
 statusBadge.style.background = "var(--green)";
-alert(Production complete!\n"${jobTitle}" has finished pressing on ${paperType} using ${colorMode}. Staged in checkout tray.);
+alert(Press run finished!\n"${jobTitle}" printed seamlessly onto ${paperType} using ${colorMode}. Assets dropped to finishing bin.);
 }, 3000);
 }
-// Hardware Spooler Core Logic (Generates custom layout print assets)
 function spoolPhysicalPrint(sourceMode) {
 const bed = document.getElementById('hardwarePrintBed');
 let contentString = "";
 if (sourceMode === 'store') {
-if(activeSum === 0) return alert("Scan store components first to generate layout items.");
-contentString = <div class="print-receipt-ticket"><h2>SANDBOX CONVENIENCE STORE</h2><p>Date: ${new Date().toLocaleDateString()}</p><hr style="border-style:dashed;"><br>;
+if(activeSum === 0) return alert("Add register logs before pulling data slips.");
+contentString = <div class="print-receipt-ticket"><h2>SANDBOX CONVENIENCE REGISTER</h2><p>Date: ${new Date().toLocaleDateString()}</p><hr style="border-style:dashed;"><br>;
 loggedStoreItems.forEach(item => {
 contentString += <div style="display:flex; justify-content:space-between;"><span>• ${item.name}</span><span>$${item.cost.toFixed(2)}</span></div>;
 });
-contentString += <br><hr style="border-style:dashed;"><br><div style="display:flex; justify-content:space-between; font-weight:bold;"><span>TOTAL DUE:</span><span>$${activeSum.toFixed(2)}</span></div><br><p style="text-align:center;">THANK YOU FOR SHOPPING!</p></div>;
+contentString += <br><hr style="border-style:dashed;"><br><div style="display:flex; justify-content:space-between; font-weight:bold;"><span>TOTAL DUE:</span><span>$${activeSum.toFixed(2)}</span></div><br><p style="text-align:center;">THANK YOU!</p></div>;
 }
 else if (sourceMode === 'restaurant') {
-if(restSum === 0) return alert("Select restaurant items to build out the kitchen order line.");
-contentString = <div class="print-receipt-ticket" style="border-color:red;"><h2>🔥 KITCHEN LINE TICKET 🔥</h2><p>Timestamp: ${new Date().toLocaleTimeString()}</p><hr style="border-style:dashed;"><br>;
+if(restSum === 0) return alert("Select menu entries to generate active order chits.");
+contentString = <div class="print-receipt-ticket" style="border-color:black;"><h2>🔥 LIVE KITCHEN EXPEDITE TICKET 🔥</h2><p>Time Log: ${new Date().toLocaleTimeString()}</p><hr style="border-style:dashed;"><br>;
 loggedRestItems.forEach(item => {
-contentString += <div style="font-size:1.2rem; font-weight:bold;">[ ] 1x ${item.name}</div>;
+contentString += <div style="font-size:1.1rem; font-weight:bold;">[ ] 1x ${item.name}</div>;
 });
-contentString += <br><hr style="border-style:dashed;"><p>Expedite Station: Table Box 1</p></div>;
+contentString += <br><hr style="border-style:dashed;"><p>Table Location: Main Booth Panel</p></div>;
 }
 else if (sourceMode === 'printshop') {
-const docTitle = document.getElementById('printJobTitle').value || "CUSTOM PRINT SHOP FLYER";
+const docTitle = document.getElementById('printJobTitle').value || "CUSTOM MULTI-MEDIA SHEET REEL";
 const pType = document.getElementById('printPaperType').value;
 const cMode = document.getElementById('printColorMode').value;
-contentString = <div style="border: 8px double #000; padding: 40px; text-align:center; max-width:550px; margin:0 auto; font-family: 'Impact', sans-serif;"> <h1 style="font-size: 2.5rem; text-transform: uppercase; margin-bottom: 20px;">${docTitle}</h1> <hr style="border: 2px solid #000;"> <br><p style="font-size: 1.2rem; font-weight: bold;">OFFICIAL PRESS RUN</p> <p style="color: #555;">Processed on: ${pType} | Output Mode: ${cMode}</p> <br><div style="border: 1px solid #000; padding: 15px; background: #fafafa; font-style: italic;"> This document was dynamically spooled and custom-pressed directly from the Box-In-A-Box Print Shop client counter dashboard interface. </div> <br><p style="font-size: 0.8rem; color: #999;">Sandbox Hub Print Press Matrix Rev 5.00</p> </div>;
+contentString = <div style="border: 6px double #000; padding: 40px; text-align:center; max-width:500px; margin:0 auto; font-family: 'Arial', sans-serif;"> <h1 style="font-size: 2.2rem; text-transform: uppercase; margin-bottom: 15px;">${docTitle}</h1> <hr style="border: 2px solid #000;"> <br><p style="font-size: 1.1rem; font-weight: bold;">SANDBOX COMMERCIAL PRESS RUN REEL</p> <p style="color: #444;">Media Stock: ${pType} | Engine Core Finish: ${cMode}</p> <br><div style="border: 1px dashed #000; padding: 12px; background: #fafafa; font-style: italic; font-size: 0.9rem;"> This document has been cleanly spooled, parsed, and pressed directly from the commercial hardware module counter dashboard panel interface system. </div> <br><p style="font-size: 0.75rem; color: #888;">Sandbox Hub Commercial Print Engine Master Matrix v6.0</p> </div>;
 }
 if (!contentString) return;
 bed.innerHTML = contentString;
 window.print();
 }
-// Dad Parameter Controls Incrementor
 let cupsLeft = 2;
 function pourCoffee(diff) {
 if(cupsLeft + diff >= 0) {
 cupsLeft += diff;
-document.getElementById('dadCoffeeAmt').innerText = ${cupsLeft} Cup${cupsLeft !== 1 ? 's' : ''};
+document.getElementById('dadCoffeeAmt').innerText = ${cupsLeft} Cup${cupsLeft !== 1 ? 's' : ''} Left;
 }
 }
-// Real-Time Universal Matrix Clock Updates
 function clockCycle() {
 const timeObj = new Date();
 document.getElementById('simClock').innerText = timeObj.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', second:'2-digit'});
 }
 setInterval(clockCycle, 1000);
 clockCycle();
+
+
+
